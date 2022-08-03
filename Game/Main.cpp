@@ -1,21 +1,19 @@
 #include "Engine.h"
 
-//#include <Framework/Actor.cpp>
-//#include <Framework/Scene.cpp>
-//#include <Framework/Scene.cpp>
-//#include <Renderer/Model.cpp>
-//#include <Renderer/Text.cpp>
-//
-//#include <iostream>
-//#include <vector>
-//#include <array>
-//#include <list>
-//#include <algorithm>
-
 
 int main()
 {
+
+	int i = 10;
+	float  f = 3.5f;
+	bool b = true;
+	const char* s = "EEF!";
+
+	if (b) std::cout << "True\n";
+
 	std::cout << "Hello World\n";
+
+	printf("Hello World %d %f %s\n", i, f, s);
 
 	//Memory
 	neu::InitializeMemory();

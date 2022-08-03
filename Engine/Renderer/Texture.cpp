@@ -1,6 +1,6 @@
 #include "Texture.h"
 #include "Renderer.h"
-
+#include "../Core/Logger.h"
 #include<SDL.h>
 #include<SDL_image.h>
 
@@ -10,7 +10,7 @@ namespace neum
 	{
 		if (m_texture != nullptr)
 		{
-			SDL_DestroyTexture;
+			SDL_DestroyTexture(m_texture);
 		}
 
 	}
@@ -19,9 +19,19 @@ namespace neum
 	{
 		// Load Surface
 		SDL_Surface* surface = IMG_Load(filename.c_str());
+		if (surface == nullptr)
+		{
+			LOG(SDL_GetError());
+			return false;
+		}
 
 		// Create Texture
 		m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+		if (m_texture == nullptr)
+		{
+			LOG(SDL_GetError());
+			return false;
+		}
 		
 		//m_texture = SDL_CreateTexture(renderer.m_renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_TARGET, 209, 209);
 		SDL_FreeSurface(surface);
@@ -32,7 +42,8 @@ namespace neum
 	Vector2 Texture::GetSize() const
 	{
 		SDL_Point point;
-		SDL_QueryTexture(m_texture, nullptr, nullptr,&point.x,&point.y);
+		(SDL_QueryTexture(m_texture, nullptr, nullptr, &point.x, &point.y));
+
 
 		return point.x, point.y;
 
