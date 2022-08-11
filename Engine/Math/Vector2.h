@@ -74,7 +74,7 @@ namespace neum
 		static const Vector2 right;
 	};
 	
-	inline std::istream& operator >> (std::istream& stream, neum::Vector2& v);
+	std::istream& operator >> (std::istream& stream, neum::Vector2& v);
 
 	inline float Vector2::LengthSqr() 
 	{ 

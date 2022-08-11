@@ -10,7 +10,8 @@ namespace neum
 		Component() = default;
 		virtual void Update() = 0;
 		friend class Actor;
-	protected:
+
 		Actor* m_owner = nullptr;
+	protected:
 	};
 }

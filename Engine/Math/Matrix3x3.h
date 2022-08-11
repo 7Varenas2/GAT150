@@ -14,8 +14,8 @@ namespace neum
 		Vector3 operator[] (size_t index) const { return rows[index]; }
 		Vector3& operator[] (size_t index) { return rows[index]; }
 
-		Vector2 operator * (const Vector2& v); // v2 = mx22 * v2
-		Matrix3x3 operator * (const Matrix3x3& mx); // mx33 = mx33 * mx33
+		Vector2 operator * (const Vector2& v) const; // v2 = mx22 * v2
+		Matrix3x3 operator * (const Matrix3x3& mx) const; // mx33 = mx33 * mx33
 
 		static Matrix3x3 CreateScale(const Vector2& scale);
 		static Matrix3x3 CreateScale(const float scale);
@@ -36,7 +36,7 @@ namespace neum
 		rows[2] = row3;
 	}
 
-	inline Vector2 Matrix3x3::operator*(const Vector2& v)
+	inline Vector2 Matrix3x3::operator*(const Vector2& v) const
 	{
 		Vector2 result;
 
@@ -46,7 +46,7 @@ namespace neum
 		return result;
 	}
 
-	inline Matrix3x3 Matrix3x3::operator * (const Matrix3x3& mx)
+	inline Matrix3x3 Matrix3x3::operator * (const Matrix3x3& mx) const
 	{
 		Matrix3x3 result;
 

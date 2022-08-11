@@ -1,5 +1,8 @@
 #include "Model.h"
 #include"../Core/File.h"
+#include "../Core/Logger.h"
+#include "../Math/Transform.h"
+#include "../Math/MathUtils.h"
 
 #include <iostream>
 #include <sstream>
@@ -10,6 +13,16 @@ namespace neum {
 		Load(filename);
 		m_radius = CalculateRadius();
 
+	}
+
+	bool Model::Create(const std::string& filename)
+	{
+		if (!Load(filename))
+		{
+			LOG("Error could not create model %s", filename.c_str());
+			return false;
+		}
+		return true;
 	}
 
 	void Model::Draw(neum::Renderer& renderer, Vector2 position, float angle, const Vector2& scale)
@@ -25,9 +38,30 @@ namespace neum {
 		}
 	}
 
-	void Model::Load(const std::string& filename)
+	
+	void Model::Draw(Renderer& renderer, const Transform& transform)
+	{
+		Matrix3x3 mx = transform.matrix;
+
+		for (auto i = 0; i < m_points.size() - 1; i++)
+		{
+			Vector2 p1 = mx * m_points[i];
+			Vector2 p2 = mx * m_points[i  + 1];
+
+			renderer.DrawLine(p1, p2, m_color);
+		}
+	}
+
+	bool Model::Load(const std::string& filename) //bool
 	{
 		std::string buffer;
+		if (!neum::ReadFile(filename, buffer))
+		{
+			LOG("Error could not read file %s", filename.c_str());
+			return false;
+		}
+
+		
 		neum::ReadFile(filename,buffer);
 
 		// Read Color
@@ -47,7 +81,7 @@ namespace neum {
 			stream >> point;
 			m_points.push_back(point);
 		}
-		
+		return true;
 	}
 
 	float Model::CalculateRadius()

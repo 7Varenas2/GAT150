@@ -1,4 +1,8 @@
 #pragma once
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <cmath>
 
 namespace neum
 {
@@ -59,7 +63,16 @@ namespace neum
 
 		Vector3 Normalized();
 		void Normalize();
+
+		static const Vector3 one;
+		static const Vector3 zero;
+		static const Vector3 up;
+		static const Vector3 down;
+		static const Vector3 left;
+		static const Vector3 right;
 	};
+
+	inline std::istream& operator >> (std::istream& stream, neum::Vector3& v);
 
 	inline float Vector3::LengthSqr()
 	{

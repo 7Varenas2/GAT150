@@ -8,7 +8,7 @@ namespace neum
 	const Vector2 Vector2::left{ 1,0 };
 	const Vector2 Vector2::right{ -1,0 };
 
-	inline std::istream& operator >> (std::istream& stream, neum::Vector2& v)
+	std::istream& operator >> (std::istream& stream, neum::Vector2& v)
 	{
 		std::string line;
 		std::getline(stream, line);

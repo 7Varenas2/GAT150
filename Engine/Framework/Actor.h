@@ -22,11 +22,14 @@ namespace neum
 		virtual void Update() override;
 		virtual void Draw(Renderer& renderer);
 
+		void AddChildren(std::unique_ptr<Actor> child);
+
 		void AddComponent(std::unique_ptr<Component> component);
 
 		virtual void OnCollision(Actor* other) {}
 		float GetRadius() { return 0; }	
 		std::string& GetTag() { return m_tag; }
+
 		friend class Scene;
 		friend class Component;
 		Transform m_transform;
@@ -41,7 +44,10 @@ namespace neum
 		float m_damping;
 
 		Scene* m_scene = nullptr;
+		Actor* m_parent = nullptr;
+
 		std::vector<std::unique_ptr<Component>> m_components;
+		std::vector<std::unique_ptr<Actor>> m_children;
 	};
 
 	template<typename T>
