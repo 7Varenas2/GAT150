@@ -9,8 +9,8 @@ namespace neum
 {
 	class Font;
 	class Renderer;
-	class Color;
-	class Vector2;
+	struct Color;
+	struct Vector2;
 	
 	class Text
 	{

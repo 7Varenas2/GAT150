@@ -7,8 +7,6 @@
 namespace neum
 {
 
-	//const char* -> "Hello";
-	
 	void CreateWindow(int width, int height)
 	{
 		SDL_Init(SDL_INIT_VIDEO);
@@ -74,17 +72,40 @@ namespace neum
 		SDL_RenderDrawPoint(m_renderer, (float)v.x, (float)v.y);
 	}
 
-	void Renderer::Draw(std::shared_ptr<Texture> texture, const Vector2& position, float angle)
+	void Renderer::Draw(std::shared_ptr<Texture> texture, const Vector2& position, float angle, const Vector2& scale, const Vector2& registration)
 	{
 		Vector2 size = texture->GetSize();
+		size = size * scale;
+
+		Vector2 origin = size * registration;
+		Vector2 tposition = position - origin;
 
 		SDL_Rect dest;
-		dest.x = position.x;
-		dest.y = position.y;
-		dest.w = size.x;
-		dest.h = size.y;
+		dest.x = (float)tposition.x;
+		dest.y = (float)tposition.y;
+		dest.w = (float)size.x;
+		dest.h = (float)size.y;
 
-		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, angle, nullptr, SDL_FLIP_NONE);
+		SDL_Point center{ (int)origin.x, (int)origin.y };
+		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, angle, nullptr, SDL_FLIP_VERTICAL);
 
+	}
+
+	void Renderer::Draw(std::shared_ptr<Texture> texture, const Transform& transform, const Vector2& registration)
+	{
+		Vector2 size = texture->GetSize();
+		size = size * transform.scale;
+
+		Vector2 origin = size * registration;
+		Vector2 tposition = transform.position - origin;
+
+		SDL_Rect dest;
+		dest.x = (float)tposition.x;
+		dest.y = (float)tposition.y;
+		dest.w = (float)size.x;
+		dest.h = (float)size.y;
+
+		SDL_Point center{ (int)origin.x, (int)origin.y };
+		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, transform.rotation, nullptr, SDL_FLIP_VERTICAL);
 	}
 }

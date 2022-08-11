@@ -1,5 +1,5 @@
 #pragma once
-
+#include "../Math/Transform.h"
 #include "../Math/Vector2.h"
 #include "../Math/Color.h"
 #include "Texture.h"
@@ -9,6 +9,8 @@ struct SDL_Window;
 
 namespace neum
 {
+	struct Transform;
+
 	class Renderer 
 	{
 	public:
@@ -31,7 +33,8 @@ namespace neum
 		int GetHeight() { return m_height; }
 		SDL_Renderer* m_renderer{ nullptr };
 
-		void Draw(std::shared_ptr<Texture> texture, const Vector2& position, float angle = 0);
+		void Draw(std::shared_ptr<Texture> texture, const Vector2& position, float angle = 0, const Vector2& scale = Vector2{1,1}, const Vector2& registration = Vector2{0.5f, 0.5f});
+		void Draw(std::shared_ptr<Texture> texture, const Transform& transform, const Vector2& registration = Vector2{ 0.5f, 0.5f });
 
 		friend Texture;
 	private:

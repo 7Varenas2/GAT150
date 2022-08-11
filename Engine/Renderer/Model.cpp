@@ -12,7 +12,7 @@ namespace neum {
 
 	}
 
-	void Model::Draw(neum::Renderer& renderer, Vector2 position, float angle, float scale)
+	void Model::Draw(neum::Renderer& renderer, Vector2 position, float angle, const Vector2& scale)
 	{
 		
 		// Draw Model

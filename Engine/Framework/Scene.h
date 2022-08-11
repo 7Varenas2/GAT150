@@ -30,7 +30,7 @@ namespace neum
 		Game* GetGame() { return m_game; }
 
 	private:
-		std::list<std::unique_ptr<Actor>>m_actors;
+		std::list<std::unique_ptr<Actor>> m_actors;
 		Game* m_game;
 	};
 

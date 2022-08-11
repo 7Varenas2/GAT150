@@ -16,6 +16,14 @@ namespace neum
 		uint8_t b;
 		uint8_t a;
 
+		/* DO HOMEWORK DECLARE AS VECTOR2*/
+		static const Color white;
+		static const Color black;
+		static const Color red;
+		static const Color green;
+		static const Color blue;
+	
+
 		friend std::istream& operator >> (std::istream& stream, Color& color);
 	};
 
@@ -25,11 +33,23 @@ namespace neum
 		std::getline(stream, line);
 		std::string str;
 
-		color.r = rands::random(255);
-		color.g = rands::random(255);
-		color.b = rands::random(255);
+		// Red 
+		str = line.substr(line.find("{") + 1, line.find(",") - 1);
+		color.r = (uint8_t)(std::stof(str) * 255);
+
+		str = line.substr(line.find(",") + 1);
+		color.g = (uint8_t)(std::stof(str) * 255);
+
+		str = line.substr(line.find(",") + 1, line.find("}") - line.find(",") - 1);
+		color.b = (uint8_t)(std::stof(str) * 255);
+		
+		//color.r = rands::random(255);
+		//color.g = rands::random(255);
+		//color.b = rands::random(255);
+
 		color.a = 255;
 	
+
 		return stream;
 	}
 }

@@ -1,19 +1,14 @@
 #include "Engine.h"
+#include <iostream>
 
+// code --> preprocessor --> compiler --> .o --> link --> .exe
 
 int main()
 {
-
-	int i = 10;
-	float  f = 3.5f;
-	bool b = true;
-	const char* s = "EEF!";
-
-	if (b) std::cout << "True\n";
-
-	std::cout << "Hello World\n";
-
-	printf("Hello World %d %f %s\n", i, f, s);
+	constexpr float degrees = math::RadToDeg(math::Pi);
+	std::cout << __FILE__ << std::endl;
+	std::cout << __LINE__ << std::endl;
+	std::cout << __FUNCTION__ << std::endl;
 
 	//Memory
 	neu::InitializeMemory();
@@ -30,9 +25,32 @@ int main()
 
 	// Texture
 	std::shared_ptr<neum::Texture> texture = std::make_shared<neum::Texture>();
-	texture->Create(neum::g_renderer, "Tiger.png");
+	texture->Create(neum::g_renderer, "spaceShips_004.png");
+	neum::g_audioSystem.AddAudio("name", "");
 
+	// Create actors
+	neum::Scene scene;
 
+	neum::Transform transform{ { 100, 100 }, 90, {2,2} };
+	std::unique_ptr<neum::Actor> actor = std::make_unique<neum::Actor>();
+	std::unique_ptr<neum::PlayerComponent> pcomponent = std::make_unique<neum::PlayerComponent>(); // Player
+	actor->AddComponent(std::move(pcomponent));
+
+	std::unique_ptr<neum::SpriteComponent> scomponent = std::make_unique<neum::SpriteComponent>(); // Sprite
+	scomponent->m_texture = texture;
+	actor->AddComponent(std::move(scomponent));
+	
+
+	std::unique_ptr<neum::AudioComponent> acomponent = std::make_unique<neum::AudioComponent>(); // Audio
+	acomponent->m_sound = "";
+	actor->AddComponent(std::move(acomponent));
+
+	std::unique_ptr < neum::PhysicsComponent> phcomponent = std::make_unique<neum::PhysicsComponent>(); // Physics
+	actor->AddComponent(std::move(phcomponent));
+
+	scene.Add(std::move(actor));
+
+	float angle = 0;
 	bool quit = false;
 	while (!quit)
 	{
@@ -42,13 +60,16 @@ int main()
 		neum::g_audioSystem.PlayAudio("Theme");
 		if (neum::g_inputSystem.GetKeyDown(neum::key_escape) == neum::InputSystem::State::Pressed) quit = true;
 
+		// Update scene
+		angle += 360.0f *  neum::g_time.deltaTime;
+		scene.Update();
+
 		neum::g_inputSystem.Update();
 
 		// Render
 		neum::g_renderer.BeginFrame();
-
-		neum::g_renderer.Draw(texture, { 400,300 }, 0);
-
+		scene.Draw(neum::g_renderer);
+		neum::g_renderer.Draw(texture, { 400,300 }, angle, { 10, 10 }, { 0.5f, 1.0f });
 		neum::g_renderer.EndFrame();
 	}
 
