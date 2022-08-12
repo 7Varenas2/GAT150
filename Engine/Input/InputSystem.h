@@ -14,7 +14,8 @@ namespace neum
 		{
 			Idle,
 			Pressed,
-			Held
+			Held,
+			Released
 
 		};
 	public:
@@ -26,6 +27,9 @@ namespace neum
 
 		void Update();
 
+		State GetKeyState(uint32_t key);
+		bool GetKeyDown(uint32_t key) { return m_keyboardState[key]; }
+		bool GetPreviousKeyDown(uint32_t key) { return m_prevKeyboardState[key]; }
 		bool GetKeyDown(int key) { return m_keyboardState[key]; }
 		
 		// Mouse

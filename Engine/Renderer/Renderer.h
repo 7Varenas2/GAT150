@@ -19,6 +19,7 @@ namespace neum
 
 		void Initialize();
 		void Shutdown();
+
 		void CreateWindow(const char* name, int width, int height);
 		void BeginFrame();
 		void EndFrame();

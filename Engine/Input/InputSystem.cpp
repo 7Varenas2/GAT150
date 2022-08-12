@@ -40,8 +40,6 @@ namespace neum
 		const uint8_t* keyboardState = SDL_GetKeyboardState(nullptr);
 		std::copy(keyboardState, keyboardState + m_numKeys, m_keyboardState.begin());
 
-		//std::cout << (bool)m_keyboardState[SDL_SCANCODE_SPACE] << std::endl;
-
 		// Mouse
 		m_prevmouseButtonState = m_mouseButtonState;
 		int x, y;
@@ -53,19 +51,61 @@ namespace neum
 
 	}
 
-	InputSystem::State InputSystem::GetButtonState(uint32_t button)
-	{
-		State keyState = InputSystem::State::Idle;
-		bool buttonDown = GetButtonDown(button);
-		bool prevButtonDown = GetPreviousButtonDown(button);
 
-		// Set the State if buttonDown(true) and prevButtonDown (true)
-		// fill in the remaining states
-		if (buttonDown == (true) && prevButtonDown == (true)) 
+	InputSystem::State InputSystem::GetKeyState(uint32_t key)
+	{
+		State keyState = State::Idle;
+		bool keyDown = GetKeyDown(key);
+		bool prevKeyDown = GetPreviousKeyDown(key);
+		// set the keyState if keyDown (true) and prevKeyDown (true)
+		if (keyDown == true && prevKeyDown == true)
 		{
-			
+			keyState = State::Held;
+
+		}
+		else if (keyDown == false && prevKeyDown == false)
+		{
+			keyState = State::Idle;
+
+		}
+		else if (keyDown == true && prevKeyDown == false)
+		{
+			keyState = State::Pressed;
+
+		}
+		else if (keyDown == false && prevKeyDown == true)
+		{
+			keyState = State::Released;
 		}
 
-		return State();
+		return keyState;
+	}
+
+
+
+	InputSystem::State InputSystem::GetButtonState(uint32_t button)
+	{
+		State keyState = State::Idle;
+		bool buttonDown = GetButtonDown(button);
+		bool prevButtonDown = GetPreviousButtonDown(button);
+		// set the keyState if buttonDown (true) and prevButtonDown (true)
+		if (buttonDown == true && prevButtonDown == true)
+		{
+			keyState = State::Held;
+		}
+		else if (buttonDown == true && prevButtonDown == false)
+		{
+			keyState = State::Idle;
+		}
+		else if (buttonDown == false && prevButtonDown == true)
+		{
+			keyState = State::Pressed;
+		}
+		else if (buttonDown == false && prevButtonDown == false)
+		{
+			keyState = State::Idle;
+		}
+		// fill in the remaining states
+		return keyState;
 	}
 }

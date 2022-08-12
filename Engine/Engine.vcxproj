@@ -172,6 +172,7 @@
     <ClCompile Include="Core\Memory.cpp" />
     <ClCompile Include="Core\Time.cpp" />
     <ClCompile Include="Engine.cpp" />
+    <ClCompile Include="EngResource\ResourceManager.cpp" />
     <ClCompile Include="Framework\Actor.cpp" />
     <ClCompile Include="Framework\Scene.cpp" />
     <ClCompile Include="Input\InputSystem.cpp" />
@@ -200,6 +201,8 @@
     <ClInclude Include="Core\Memory.h" />
     <ClInclude Include="Core\Time.h" />
     <ClInclude Include="Engine.h" />
+    <ClInclude Include="EngResource\Resource.h" />
+    <ClInclude Include="EngResource\ResourceManager.h" />
     <ClInclude Include="Framework\Actor.h" />
     <ClInclude Include="Framework\Component.h" />
     <ClInclude Include="Framework\Game.h" />

@@ -74,9 +74,9 @@ namespace neum
 	{
 		Matrix3x3 mx = identity;
 
-		//sX 0 0
+		//sX 0  0
 		// 0 sY 0
-		// 0 0 sZ
+		// 0 0  1
 
 		mx[0][0] = scale.x;
 		mx[1][1] = scale.y;
@@ -89,7 +89,7 @@ namespace neum
 
 	inline Matrix3x3 Matrix3x3::CreateScale(const float scale)
 	{
-		Matrix3x3 mx;
+		Matrix3x3 mx = identity;
 
 		// Uniform Scale
 		//s 0
@@ -112,14 +112,16 @@ namespace neum
 
 		mx[0] = Vector3{ c,-s, 0.0f };
 		mx[1] = Vector3{ s,c, 0.0f };
-		mx[1] = Vector3{ 0.0f,0.0f, 1.0f };
+		mx[2] = Vector3{ 0.0f,0.0f, 1.0f };
 
-		return Matrix3x3();
+		return mx;
 	}
 	inline Matrix3x3 Matrix3x3::CreateTranslation(const Vector2& translate)
 	{
-
-		Matrix3x3 mx;
+		// 1 0 x
+		// 0 1 y
+		// 0 0 1
+		Matrix3x3 mx = identity;
 
 		mx[0][2] = translate.x;
 		mx[1][2] = translate.y;

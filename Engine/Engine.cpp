@@ -6,4 +6,5 @@ namespace neum
 	Time g_time;
 	Renderer g_renderer;
 	AudioSystem g_audioSystem;
+	ResourceManager g_resources;
 }

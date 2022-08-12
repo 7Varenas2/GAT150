@@ -17,6 +17,7 @@
 
 #include "Input/InputSystem.h"
 #include "Audio/AudioSystem.h"
+#include "EngResource/ResourceManager.h"
 
 #include "Renderer/Renderer.h"
 #include "Renderer/Text.h"
@@ -34,5 +35,6 @@ namespace neum
 	extern InputSystem g_inputSystem;
 	extern Time g_time;
 	extern AudioSystem g_audioSystem;
+	extern ResourceManager g_resources;
 
 }

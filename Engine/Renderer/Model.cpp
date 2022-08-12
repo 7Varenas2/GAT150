@@ -15,7 +15,7 @@ namespace neum {
 
 	}
 
-	bool Model::Create(const std::string& filename)
+	bool Model::Create(const std::string& filename, void* data)
 	{
 		if (!Load(filename))
 		{
