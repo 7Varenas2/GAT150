@@ -6,7 +6,7 @@ namespace neum
 {
 void PlayerComponent::Update()
 {
-	std::cout << "Player\n";
+	//std::cout << "Player\n";
 
 	// Update transform with input
 	Vector2 direction = Vector2::zero;
@@ -21,20 +21,22 @@ void PlayerComponent::Update()
 
 	}
 
-	if (g_inputSystem.GetButtonState(key_left) == InputSystem::State::Held)
+	if (g_inputSystem.GetButtonState(key_left) == InputSystem::State::Pressed)
 	{
 		m_owner->m_transform.rotation -= 180 * g_time.deltaTime;
+		
 	}	
-	if (g_inputSystem.GetButtonState(key_right) == InputSystem::State::Held)
+	if (g_inputSystem.GetButtonState(key_right) == InputSystem::State::Pressed)
 	{
 		m_owner->m_transform.rotation += 180 * g_time.deltaTime;
 	}
 	float thrust = 0;
-	if (g_inputSystem.GetButtonState(key_up) == InputSystem::State::Held)
+	if (g_inputSystem.GetButtonState(key_up) == InputSystem::State::Pressed)
 	{
 		thrust = 500;
 	}
 	auto component = m_owner->GetComponent<PhysicsComponent>();
+
 	if (component)
 	{
 		// Thrust force

@@ -25,7 +25,7 @@ int main()
 
 	// Texture load assets
 	std::shared_ptr<neum::Texture> texture = std::make_shared<neum::Texture>();
-	texture->Create(neum::g_renderer, "spaceShips_004.png");
+	texture->Create(neum::g_renderer, "Purple_Ship.png");
 	
 	std::shared_ptr<neum::Model> model = std::make_shared<neum::Model>();
 	model->Create( "Player.txt");
@@ -35,28 +35,32 @@ int main()
 	// Create actors
 	neum::Scene scene;
 
-	neum::Transform transform{ neum::Vector2{ 400, 300 }, 90, {3,3} };
+	neum::Transform transform{ neum::Vector2{ 40, 30 }, 90, {3,3} };
 	std::unique_ptr<neum::Actor> actor = std::make_unique<neum::Actor>();
 	std::unique_ptr<neum::PlayerComponent> pcomponent = std::make_unique<neum::PlayerComponent>(); // Player
 	actor->AddComponent(std::move(pcomponent));
 
+	// Model
 	std::unique_ptr<neum::ModelComponent> mcomponent = std::make_unique<neum::ModelComponent>();
 	mcomponent->m_model = model;
 	actor->AddComponent(std::move(mcomponent));
 
+	// Sprite
+	std::unique_ptr<neum::SpriteComponent> scomponent = std::make_unique<neum::SpriteComponent>(); 
+	scomponent->m_texture = texture;
+	actor->AddComponent(std::move(scomponent));
 
-		//std::unique_ptr<neum::SpriteComponent> scomponent = std::make_unique<neum::SpriteComponent>(); // Sprite
-	//scomponent->m_texture = texture;
-	//actor->AddComponent(std::move(scomponent));
-
-	std::unique_ptr<neum::AudioComponent> acomponent = std::make_unique<neum::AudioComponent>(); // Audio
+	// Audio
+	std::unique_ptr<neum::AudioComponent> acomponent = std::make_unique<neum::AudioComponent>(); 
 	acomponent->m_sound = "";
 	actor->AddComponent(std::move(acomponent));
 
-	std::unique_ptr < neum::PhysicsComponent> phcomponent = std::make_unique<neum::PhysicsComponent>(); // Physics
+	// Physics
+	std::unique_ptr < neum::PhysicsComponent> phcomponent = std::make_unique<neum::PhysicsComponent>(); 
 	actor->AddComponent(std::move(phcomponent));
 
-	neum::Transform transformC{ neum::Vector2{ 40, 30 }, 0, {1,1} };
+	// Child
+	neum::Transform transformC{ neum::Vector2{ 40, 30 }, 90, {1,1} };
 	std::unique_ptr<neum::Actor> child = std::make_unique<neum::Actor>(transformC);
 	std::unique_ptr<neum::ModelComponent> mcomponentC = std::make_unique<neum::ModelComponent>();
 	mcomponentC->m_model = model;
@@ -84,7 +88,7 @@ int main()
 		// Render
 		neum::g_renderer.BeginFrame();
 		scene.Draw(neum::g_renderer);
-		neum::g_renderer.Draw(texture, { 400,300 }, angle, { 10, 10 }, { 0.5f, 1.0f });
+		//neum::g_renderer.Draw(texture, { 400,300 }, angle, { 10, 10 }, { 0.5f, 1.0f });
 		neum::g_renderer.EndFrame();
 	}
 

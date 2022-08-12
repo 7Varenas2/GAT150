@@ -11,7 +11,7 @@ namespace neum
 		virtual void Update() = 0;
 		friend class Actor;
 
-		Actor* m_owner = nullptr;
 	protected:
+		Actor* m_owner = nullptr;
 	};
 }
