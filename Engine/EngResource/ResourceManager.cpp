@@ -7,5 +7,6 @@ namespace neum {
 
 	void ResourceManager::Shutdown()
 	{
+		m_resources.clear();
 	}
 }

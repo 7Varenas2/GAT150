@@ -15,7 +15,26 @@ namespace neum {
 
 	}
 
-	bool Model::Create(const std::string& filename, void* data)
+	bool Model::Create(const std::string& filename, ...)
+	{
+		// Check data is not null
+		// va_list - Type to hold information about variable arguments
+		va_list args;
+
+		// va_start - enables access to variadic function arguments
+		va_start(args, filename);
+
+		// va_arg - accesses the next variadic function arguments
+		Renderer& renderer = va_arg(args, Renderer);
+
+		// va_end - ends traversal of the cvariadic function arguments
+		va_end(args);
+
+		// Create texture (returns true/false if successful
+		return Create(filename, renderer);
+	}
+
+	bool Model::Create(const std::string& filename)
 	{
 		if (!Load(filename))
 		{

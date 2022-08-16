@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include "..\Math\Color.h"
 #include "..\EngResource\Resource.h"
+#include <cstdarg>
 #include <vector>
 #include <string>
 
@@ -17,7 +18,8 @@ namespace neum
 
 		Model(const std::string& filename) ;
 
-		bool Create(const std::string& filename, void* data) ;
+		bool Create(const std::string& filename, ...) override;
+		bool Create(const std::string& filename) ;
 
 		void Draw(Renderer& renderer, const Vector2 position, float angle, const Vector2& scale = Vector2{1,1});
 		void Draw(Renderer& renderer, const Transform& transform);

@@ -3,8 +3,11 @@
 
 // code --> preprocessor --> compiler --> .o --> link --> .exe
 
+
+
 int main()
 {
+
 	constexpr float degrees = math::RadToDeg(math::Pi);
 	std::cout << __FILE__ << std::endl;
 	std::cout << __LINE__ << std::endl;
@@ -31,7 +34,14 @@ int main()
 	//std::shared_ptr<neum::Model> model = std::make_shared<neum::Model>();
 	//model->Create( "Player.txt"); 
 
-	std::shared_ptr<neum::Texture> texture = neum::g_resources.Get<neum::Texture>("Purple_Ship.png", &neum::g_renderer);
+	auto texture = neum::g_resources.Get<neum::Texture>("Purple_Ship.png", &neum::g_renderer);
+
+	// Font
+	auto font = neum::g_resources.Get<neum::Font>("Fonts/CHECKBK0.TTF",10);
+
+	//Model
+	auto mcomponent = std::make_unique<neum::ModelComponent>();
+	mcomponent->m_model = neum::g_resources.Get<neum::Model>("Player.txt");
 	
 	neum::g_audioSystem.AddAudio("name", "");
 
@@ -44,9 +54,9 @@ int main()
 	actor->AddComponent(std::move(pcomponent));
 
 	// Model
-	std::unique_ptr<neum::ModelComponent> mcomponent = std::make_unique<neum::ModelComponent>();
+	/*std::unique_ptr<neum::ModelComponent> mcomponent = std::make_unique<neum::ModelComponent>();
 	mcomponent->m_model = neum::g_resources.Get<neum::Model>("Player.txt");
-	actor->AddComponent(std::move(mcomponent));
+	actor->AddComponent(std::move(mcomponent));*/
 
 	// Sprite
 	//std::unique_ptr<neum::SpriteComponent> scomponent = std::make_unique<neum::SpriteComponent>(); 

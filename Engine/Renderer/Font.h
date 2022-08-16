@@ -9,14 +9,14 @@ struct _TTF_Font;
 namespace neum
 {
 	/* MAKE IT A RESOURCE*/
-	class Font
+	class Font : public Resource
 	{
 	public:
 		Font() = default;
 		Font(const std::string& filename, int fontSize);
 		~Font();
 
-		bool Create(const std::string& filename, void* data = nullptr);
+		bool Create(const std::string& filename, ...) override;
 		void Load(const std::string& filename, int fontSize);
 		
 		friend class Text;

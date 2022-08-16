@@ -7,4 +7,9 @@ namespace neum
 	Renderer g_renderer;
 	AudioSystem g_audioSystem;
 	ResourceManager g_resources;
+
+	void Engine::Register()
+	{
+		Factory::Instance().Register<Actor>("Actor");
+	}
 }

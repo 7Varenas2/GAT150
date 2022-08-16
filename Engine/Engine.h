@@ -6,8 +6,11 @@
 #include "../Engine/Math/MathUtils.h"
 #include "../Engine/Math/Random.h"
 
+
 #include"Framework/Scene.h"
 #include "Framework/Game.h"
+#include "Framework/Singleton.h"
+#include "Framework/Factory.h"
 
 #include "Components/PlayerComponent.h"
 #include "Components/SpriteComponent.h"
@@ -36,5 +39,11 @@ namespace neum
 	extern Time g_time;
 	extern AudioSystem g_audioSystem;
 	extern ResourceManager g_resources;
+
+	class Engine : public Singleton<Engine>
+	{
+	public:
+		void Register();
+	};
 
 }
