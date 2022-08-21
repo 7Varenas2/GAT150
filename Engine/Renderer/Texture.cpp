@@ -15,7 +15,7 @@ namespace neum
         }
     }
 
-    bool Texture::Create(const std::string& filename, ...)
+    bool Texture::Create(const std::string filename, ...)
     {
         // Check data is not null
         // va_list - Type to hold information about variable arguments
@@ -32,7 +32,7 @@ namespace neum
 
 
         // Create texture (returns true/false if successful
-        return Create(renderer, filename);
+        return Create(filename, renderer);
 
     }
 

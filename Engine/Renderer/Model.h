@@ -18,7 +18,7 @@ namespace neum
 
 		Model(const std::string& filename) ;
 
-		bool Create(const std::string& filename, ...) override;
+		bool Create(const std::string filename, ...) override;
 		bool Create(const std::string& filename) ;
 
 		void Draw(Renderer& renderer, const Vector2 position, float angle, const Vector2& scale = Vector2{1,1});

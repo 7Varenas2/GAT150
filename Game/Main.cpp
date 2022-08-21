@@ -1,8 +1,8 @@
 #include "Engine.h"
 #include <iostream>
+#include <Serialization/Json.cpp>
 
 // code --> preprocessor --> compiler --> .o --> link --> .exe
-
 
 
 int main()
@@ -16,6 +16,38 @@ int main()
 	//Memory
 	neu::InitializeMemory();
 	neum::SetFilePath("../Assets");
+
+	rapidjson::Document document;
+	bool success = neum::json::Load("json.txt", document);
+	assert(success);
+
+	std::string str;
+	neum::json::Get(document, "string", str);
+	std::cout << str << std::endl;
+
+	bool b;
+	neum::json::Get(document, "boolean", b);
+	std::cout << b << std::endl;
+
+	int i1;
+	neum::json::Get(document, "integer1", i1);
+	std::cout << i1 << std::endl;
+
+	int i2;
+	neum::json::Get(document, "integer2", i2);
+	std::cout << i2 << std::endl;
+
+	float f;
+	neum::json::Get(document, "float", f);
+	std::cout << f << std::endl;
+
+	neum::Vector2 v2;
+	neum::json::Get(document, "vector2", v2);
+	std::cout << v2 << std::endl;
+
+	neum::Color color;
+	neum::json::Get(document, "color", color);
+	std::cout << color << std::endl;
 
 	// Create Systems
 	neum::g_renderer.Initialize();

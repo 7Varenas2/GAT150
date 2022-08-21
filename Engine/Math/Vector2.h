@@ -20,8 +20,6 @@ namespace neum
 		float operator [] (size_t index) const { return (&x)[index]; }
 		float& operator[] (size_t index) { return (&x)[index]; }
 		
-
-
 		// Aruthmetic operators
 		// Vector2 = Vector2 + Vector2
 		Vector2 operator + (const Vector2& v) const { return Vector2{ this->x + v.x  ,this->y + v.y }; }
@@ -74,7 +72,8 @@ namespace neum
 		static const Vector2 right;
 	};
 	
-	std::istream& operator >> (std::istream& stream, neum::Vector2& v);
+	std::istream& operator >> (std::istream& stream, Vector2& v);
+	std::ostream& operator << (std::ostream& stream, const Vector2& v);
 
 	inline float Vector2::LengthSqr() 
 	{ 

@@ -7,7 +7,8 @@
 #include <iostream>
 #include <sstream>
 
-namespace neum {
+namespace neum 
+{
 	Model::Model(const std::string& filename)
 	{
 		Load(filename);
@@ -15,7 +16,7 @@ namespace neum {
 
 	}
 
-	bool Model::Create(const std::string& filename, ...)
+	bool Model::Create(const std::string filename, ...)
 	{
 		// Check data is not null
 		// va_list - Type to hold information about variable arguments
@@ -30,8 +31,9 @@ namespace neum {
 		// va_end - ends traversal of the cvariadic function arguments
 		va_end(args);
 
+
 		// Create texture (returns true/false if successful
-		return Create(filename, renderer);
+		return Load(filename);
 	}
 
 	bool Model::Create(const std::string& filename)

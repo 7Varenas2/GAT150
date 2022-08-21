@@ -22,15 +22,15 @@ namespace neum
 		void Shutdown();
 
 		template <typename T, typename ... TArgs>
-		std::shared_ptr<T> Get(const std::string& name, TArgs... args);
+		std::shared_ptr<T> Get(const std::string& name, TArgs ... args);
 
 	private:
 		std::map<std::string, std::shared_ptr<Resource>> m_resources;
 
 	};
 
-	template<typename T, typename... TArgs>
-	inline std::shared_ptr<T> ResourceManager::Get(const std::string& name, TArgs... args)
+	template<typename T, typename ... TArgs>
+	inline std::shared_ptr<T> ResourceManager::Get(const std::string& name, TArgs ... args)
 	{
 		if (m_resources.find(name) != m_resources.end())
 		{
@@ -47,6 +47,6 @@ namespace neum
 			return resource;
 		}
 
-		return std::shared_ptr<T>();
+		//return std::shared_ptr<T>();
 	}
 }

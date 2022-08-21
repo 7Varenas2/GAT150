@@ -16,6 +16,9 @@ namespace neum
 		uint8_t b;
 		uint8_t a;
 
+		uint8_t operator [] (size_t index) const { return (&r)[index]; }
+		uint8_t& operator[] (size_t index) { return (&r)[index]; }
+
 		/* DO HOMEWORK DECLARE AS VECTOR2*/
 		static const Color white;
 		static const Color black;
@@ -26,6 +29,8 @@ namespace neum
 
 		friend std::istream& operator >> (std::istream& stream, Color& color);
 	};
+
+	std::ostream& operator << (std::ostream& stream, const Color& color);
 
 	inline std::istream& operator >> (std::istream& stream, Color& color)
 	{
@@ -49,6 +54,13 @@ namespace neum
 
 		color.a = 255;
 	
+
+		return stream;
+	}
+
+	std::ostream& operator<<(std::ostream& stream, const Color& color)
+	{
+		stream << (int)color.r << " " << (int)color.g << " " << (int)color.b << " " << (int)color.a;
 
 		return stream;
 	}

@@ -16,7 +16,7 @@ namespace neum
 		Font(const std::string& filename, int fontSize);
 		~Font();
 
-		bool Create(const std::string& filename, ...) override;
+		bool Create(const std::string filename, ...) override;
 		void Load(const std::string& filename, int fontSize);
 		
 		friend class Text;
