@@ -29,16 +29,19 @@ namespace neum
         // va_arg - accesses the next variadic function arguments
         int fontSize = va_arg(args, int);
 
-        // va_end - ends traversal of the cvariadic function arguments
-        va_end(args);
+        //Note -Opens the File, but has to be classafied as File and not .ttf, Or thats what works i guess
+        m_ttfFont = TTF_OpenFont(filename.c_str(), fontSize);
 
-        // Create texture (returns true/false if successful
-        return  Create(filename, fontSize);
+        return true;
     }
 
     void Font::Load(const std::string& filename, int fontSize)
     {
         m_ttfFont = TTF_OpenFont(filename.c_str(), fontSize);
+    }
+    SDL_Surface* Font::CreateSurface(const std::string& text, const Color& color)
+    {
+        return nullptr;
     }
 }
 

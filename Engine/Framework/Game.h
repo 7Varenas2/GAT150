@@ -21,14 +21,14 @@ namespace neum
 
 		int GetScore() { return m_score; }
 		void AddPoints(int points) { m_score += points; }
-		void RemoveLives(int lives) { m_lives -= lives; }
+		//void RemoveLives(int lives) { m_lives -= lives; }
 
-
-
+		float AdjustHealth(float health) { return p_health -= health; }
+		float GetHealth() { return p_health; }
 
 	protected:
 		std::unique_ptr<Scene> m_scene;
 		int m_score = 0;
-		int m_lives = 3;
+		float p_health = 0;
 	};
 }

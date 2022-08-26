@@ -3,6 +3,25 @@
 
 namespace neum
 {
+	bool ModelComponent::Write(const rapidjson::Value& value) const
+	{
+		return true;
+	}
+
+	bool ModelComponent::Read(const rapidjson::Value& value)
+	{
+		std::string model_name;
+		READ_DATA(value, model_name);
+
+		m_model = g_resources.Get<Model>(model_name);
+
+		return true;
+	}
+
+	void ModelComponent::Initialize()
+	{
+	}
+
 	void ModelComponent::Update()
 	{
 

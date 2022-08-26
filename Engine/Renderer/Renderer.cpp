@@ -17,8 +17,8 @@ namespace neum
 	void Renderer::Initialize()
 	{
 		SDL_Init(SDL_INIT_VIDEO);
-		IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 		TTF_Init();
+		IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 	}
 
 	void Renderer::Shutdown()
@@ -107,5 +107,9 @@ namespace neum
 
 		SDL_Point center{ (int)origin.x, (int)origin.y };
 		SDL_RenderCopyEx(m_renderer, texture->m_texture, nullptr, &dest, transform.rotation, nullptr, SDL_FLIP_VERTICAL);
+	}
+	void Renderer::Draw(std::shared_ptr<Texture> texture, const Rect& source, const Transform& transform, const Vector2& registration)
+	{
+
 	}
 }

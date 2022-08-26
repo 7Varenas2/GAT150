@@ -35,8 +35,8 @@ void PlayerComponent::Update()
 	{
 		thrust = 100;
 	}
-	auto component = m_owner->GetComponent<PhysicsComponent>();
 
+	auto component = m_owner->GetComponent<PhysicsComponent>();
 	if (component)
 	{
 		// Thrust force
@@ -44,11 +44,26 @@ void PlayerComponent::Update()
 		component->ApplyForce(force);
 
 		// Gravitational force
-		//force = (Vector2{ 400, 300 } - m_owner->m_transform.position).Normalized() * 60.0f;
-		//component->ApplyForce(force);
+		force = (Vector2{ 400, 300 } - m_owner->m_transform.position).Normalized() * 60.0f;
+		component->ApplyForce(force);
 
 	}
 
+}
+
+void PlayerComponent::Initialize()
+{
+}
+
+bool PlayerComponent::Write(const rapidjson::Value& value) const
+{
+	return false;
+}
+
+bool PlayerComponent::Read(const rapidjson::Value& value)
+{
+	READ_DATA(value, speed);
+	return true;
 }
 
 }

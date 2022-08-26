@@ -7,6 +7,7 @@ namespace neum
 	Renderer g_renderer;
 	AudioSystem g_audioSystem;
 	ResourceManager g_resources;
+	PhysicsSystem g_physicsSystem;
 
 	void Engine::Register()
 	{

@@ -18,35 +18,26 @@ namespace neum
 
 	bool Model::Create(const std::string filename, ...)
 	{
-		// Check data is not null
-		// va_list - Type to hold information about variable arguments
-		va_list args;
-
-		// va_start - enables access to variadic function arguments
-		va_start(args, filename);
-
-		// va_arg - accesses the next variadic function arguments
-		Renderer& renderer = va_arg(args, Renderer);
-
-		// va_end - ends traversal of the cvariadic function arguments
-		va_end(args);
-
-
-		// Create texture (returns true/false if successful
-		return Load(filename);
-	}
-
-	bool Model::Create(const std::string& filename)
-	{
 		if (!Load(filename))
 		{
-			LOG("Error could not create model %s", filename.c_str());
+			LOG("Error");
 			return false;
+
 		}
 		return true;
 	}
 
-	void Model::Draw(neum::Renderer& renderer, Vector2 position, float angle, const Vector2& scale)
+	//bool Model::Create(const std::string& filename)
+	//{
+	//	if (!Load(filename))
+	//	{
+	//		LOG("Error could not create model %s", filename.c_str());
+	//		return false;
+	//	}
+	//	return true;
+	//}
+
+	void Model::Draw(Renderer& renderer, const Vector2& position, float angle, const float scale)
 	{
 		
 		// Draw Model
@@ -63,6 +54,10 @@ namespace neum
 	void Model::Draw(Renderer& renderer, const Transform& transform)
 	{
 		Matrix3x3 mx = transform.matrix;
+		if (m_points.size() == 0)
+		{
+			return;
+		}
 
 		for (auto i = 0; i < m_points.size() - 1; i++)
 		{
@@ -73,29 +68,27 @@ namespace neum
 		}
 	}
 
-	bool Model::Load(const std::string& filename) //bool
+	bool Model::Load(const std::string& filename)
 	{
 		std::string buffer;
+		//anvilHM::ReadFile(fileName, buffer);
 		if (!neum::ReadFile(filename, buffer))
 		{
-			LOG("Error could not read file %s", filename.c_str());
+			LOG("ERROR COULD NOT LOAD MODEL %s", filename.c_str());
 			return false;
 		}
 
-		
-		neum::ReadFile(filename,buffer);
-
-		// Read Color
-		std::stringstream stream(buffer);
+		// read color
+		std::istringstream stream(buffer);
 		stream >> m_color;
 
-		// Read number of points
 		std::string line;
 		std::getline(stream, line);
+		//get number of points
 		size_t numPoints = std::stoi(line);
 
-		// Read model points
-		for (size_t i = 0; i < numPoints; i++)
+		//read model points 
+		for (size_t i = 0; i < numPoints; i++) //just to check
 		{
 			Vector2 point;
 
@@ -103,7 +96,9 @@ namespace neum
 			m_points.push_back(point);
 		}
 		return true;
+
 	}
+			
 
 	float Model::CalculateRadius()
 	{

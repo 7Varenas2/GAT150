@@ -1,5 +1,5 @@
 #pragma once
-#include "../Framework/Component.h"
+#include "Framework/Component.h"
 
 namespace neum
 {

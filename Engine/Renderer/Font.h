@@ -18,6 +18,8 @@ namespace neum
 
 		bool Create(const std::string filename, ...) override;
 		void Load(const std::string& filename, int fontSize);
+
+		SDL_Surface* CreateSurface(const std::string& text, const Color& color);
 		
 		friend class Text;
 		_TTF_Font* m_ttfFont = nullptr;

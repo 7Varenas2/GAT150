@@ -4,6 +4,7 @@
 #include <string>
 #include<SDL.h>
 #include<SDL_image.h>
+#include <SDL_surface.h>
 
 namespace neum
 {
@@ -32,7 +33,7 @@ namespace neum
 
 
         // Create texture (returns true/false if successful
-        return Create(filename, renderer);
+        return Create(renderer, filename);
 
     }
 
@@ -55,6 +56,23 @@ namespace neum
         SDL_FreeSurface(surface);
         return true;
 
+    }
+
+    bool Texture::CreateFromSurface(SDL_Surface* m_surface, Renderer& renderer)
+    {
+        if (m_texture) SDL_DestroyTexture(m_texture);
+        
+        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, m_surface);
+
+        SDL_FreeSurface(m_surface);
+
+        if (!m_texture)
+        {
+            LOG("ERROR");
+            return false;
+        }
+
+        return true;
     }
 
     Vector2 Texture::GetSize() const

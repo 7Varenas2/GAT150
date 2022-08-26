@@ -19,6 +19,7 @@ neum::Text::~Text()
 {
 	SDL_Color c{ color.r, color.g, color.b, color.a };
 	SDL_Surface* surface = TTF_RenderText_Solid(m_font->m_ttfFont, text.c_str(), c);
+
 	m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
 	SDL_FreeSurface(surface);
 }

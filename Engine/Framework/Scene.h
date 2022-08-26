@@ -12,22 +12,31 @@ namespace neum
 	class Actor;
 	class Renderer;
 
-	class Scene
+	class Scene : public GameObject, public ISerializable
 	{
 	public:
 		Scene() = default;
 		Scene(Game* game) : m_game{ game } {}
+		Scene(const Scene& other) {}
 		~Scene() = default;
+
+		CLASS_DECLARATION(Scene)
+
+		// Inherited via ISerializable
+		void Initialize() override;
+		virtual bool Write(const rapidjson::Value& value) const override;
+		virtual bool Read(const rapidjson::Value& value) override;
 
 		void Update();
 		void Draw(Renderer& renderer);
-
 		void Add(std::unique_ptr<Actor> actor);
+		void RemoveAll();
 
 		template<typename T>
 		T* GetActor();
 
 		Game* GetGame() { return m_game; }
+
 
 	private:
 		std::list<std::unique_ptr<Actor>> m_actors;

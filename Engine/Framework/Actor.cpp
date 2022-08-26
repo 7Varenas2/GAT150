@@ -1,10 +1,29 @@
 #include "Actor.h"
-#include "../Components/RenderComponent.h"
+#include "Factory.h"
+#include "Components/RenderComponent.h"
 #include <vector>
 
 
 namespace neum 
 {
+	Actor::Actor(const Actor& other)
+	{
+		m_name = other.m_name;
+		m_tag = other.m_tag;
+		m_scene = other.m_scene;
+
+		for (auto& component : other.m_components)
+		{
+
+			
+			auto clone = std::unique_ptr<Component> ((Component*)component->Clone().release());
+			AddComponent(std::move(clone));
+		}
+	}
+
+	void Actor::Initialize()
+	{
+	}
 	void Actor::Update()
 	{
 		for (auto& component : m_components)
@@ -33,7 +52,7 @@ namespace neum
 		}
 		for (auto& child : m_children)
 		{
-			child->Update();
+			child->Draw(renderer);
 		}
 	}
 
@@ -48,5 +67,41 @@ namespace neum
 	{
 		component->m_owner = this;
 		m_components.push_back(std::move(component));
+	}
+
+	bool Actor::Write(const rapidjson::Value& value) const
+	{
+		return true;
+	}
+
+	bool Actor::Read(const rapidjson::Value& value)
+	{
+		if (!value.HasMember("components") && value["components"].IsArray())//check
+		{
+			return false;
+		}
+
+		READ_DATA(value, m_name);
+		READ_DATA(value, m_tag);
+
+		if (value.HasMember("transform")) m_transform.Read(value["transform"]);
+
+		if (value.HasMember("components") && value["components"].IsArray())
+		{
+			for (auto& componentValue : value["components"].GetArray())
+			{
+
+				std::string type;
+				READ_DATA(componentValue, type);
+				auto component = Factory::Instance().Create<Component>(type);
+				if (component)
+				{
+					component->Read(componentValue);
+					AddComponent(std::move(component));
+				}
+			}
+		}
+
+		return true;
 	}
 }
