@@ -10,7 +10,7 @@ namespace neum
 	extern const uint32_t key_left = SDL_SCANCODE_A;
 	extern const uint32_t key_right = SDL_SCANCODE_D;
 	extern const uint32_t key_escape = SDL_SCANCODE_ESCAPE;
-	extern const uint32_t key_enter = SDL_SCANCODE_RETURN;
+	
 
 	const uint32_t button_left = 0;
 	const uint32_t button_middle = 1;

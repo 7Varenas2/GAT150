@@ -9,6 +9,7 @@ namespace neum
 	ResourceManager g_resources;
 	PhysicsSystem g_physicsSystem;
 	EventManager g_eventManager;
+	CameraComponent g_camera;
 
 
 	void Engine::Register()

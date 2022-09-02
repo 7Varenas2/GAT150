@@ -55,6 +55,7 @@ namespace neum
 	extern ResourceManager g_resources;
 	extern PhysicsSystem g_physicsSystem;
 	extern EventManager g_eventManager;
+	extern CameraComponent g_camera;
 
 	class Engine : public Singleton<Engine>
 	{

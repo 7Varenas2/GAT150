@@ -30,7 +30,7 @@ namespace neum
 
 		m_gameState = gameState::Title_Screen;
 
-		std::cout << "HINT: Press ENTER to Start \n";
+		std::cout << "Press SPACE to Start \n";
 
 		neum::g_eventManager.Subscribe("EVENT_ADD_POINTS", std::bind(&GameArenas::OnNotify, this, std::placeholders::_1));
 	}
@@ -46,7 +46,7 @@ namespace neum
 		{
 		case gameState::Title_Screen:
 
-			if (g_inputSystem.GetKeyDown(neum::key_enter) == neum::InputSystem::Pressed)
+			if (g_inputSystem.GetKeyDown(neum::key_space) == neum::InputSystem::Pressed)
 			{
 				m_scene->GetActorFromName("Title")->SetActive(false);
 				m_scene->GetActorFromName("Score")->SetActive(true);

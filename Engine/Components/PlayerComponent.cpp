@@ -46,7 +46,7 @@ void PlayerComponent::Update()
 	if (camera)
 	{
 		camera->m_transform.position = math::Lerp(camera->m_transform.position, m_owner->m_transform.position, 2 * g_time.deltaTime);
-		
+		//camera->m_transform.position = m_owner->m_transform.position;
 	}
 
 	if (m_groundCount > 0 && g_inputSystem.GetKeyState(key_space) == InputSystem::State::Pressed)
@@ -142,6 +142,8 @@ void PlayerComponent::OnCollisionExit(Actor* other)
 	{
 		m_groundCount--;
 	}
+
+	//if (m_groundCount > 0 && g_inputSystem.GetKeyState(key_space) == InputSystem::KeyState::Pressed)
 
 	std::cout << "player exit \n";
 }

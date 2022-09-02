@@ -35,7 +35,7 @@ namespace neum
 		T* GetComponent();
 
 		virtual void OnCollision(Actor* other) {}
-		float GetRadius() { return 0; }//m_model.GetRadius()* std::max(m_transform.scale.x, m_transform.scale.y);}
+		float GetRadius() { return 0; }
 
 		std::string& GetTag() { return tag; }
 		std::string& SetTag(const std::string& tag) { this->tag = tag; }
