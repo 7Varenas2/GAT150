@@ -1,7 +1,8 @@
 #pragma once
 #include "Vector2.h"
+#include "Matrix2x2.h"
 #include "Matrix3x3.h"
-#include <Math/MathUtils.h>
+#include "MathUtils.h"
 #include "Serialization/Serializable.h"
 
 namespace neum
@@ -9,11 +10,16 @@ namespace neum
 	struct Transform : public ISerializable
 	{
 		Vector2 position;
-		float rotation { 0 };
+		float rotation;
 		Vector2 scale{ 1, 1 };
 
 		Matrix3x3 matrix;
-		Transform() {}
+		
+		Transform(const Vector2& position, float rotation, const Vector2& scale) :
+			position{ position },
+			rotation{ rotation },
+			scale{ scale }
+		{}
 		virtual bool Write(const rapidjson::Value& value) const override;
 		virtual bool Read(const rapidjson::Value& value) override;
 
@@ -39,6 +45,14 @@ namespace neum
 
 		}
 
+		operator Matrix2x2 () const
+		{
+			Matrix2x2 mxS = Matrix2x2::CreateScale(scale);
+			Matrix2x2 mxR = Matrix2x2::CreateRotation(math::DegToRad(rotation));
+
+			return { mxS * mxR };
+		}
+
 		operator Matrix3x3 () const
 		{
 			Matrix3x3 mxScale = Matrix3x3::CreateScale(scale);
@@ -47,5 +61,9 @@ namespace neum
 
 			return { mxScale * mxRotation * mxTranslation };
 		}
+
+
+		//virtual bool Write(const rapidjson::Value& value) const override;
+		//virtual bool Read(const rapidjson::Value& value) override;
 	};
 }

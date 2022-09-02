@@ -5,27 +5,28 @@ namespace neum
 {
 	void PhysicsComponent::Update()
 	{
-		m_velocity += m_acceleration * g_time.deltaTime;
-		m_owner->m_transform.position += m_velocity * g_time.deltaTime;
-		m_velocity *= m_damping;
+		velocity += acceleration * g_time.deltaTime;
+		m_owner->m_transform.position += velocity * g_time.deltaTime;
+		velocity *= damping;
 		
-		m_acceleration = Vector2::zero;
+		acceleration = Vector2::zero;
 	}
 
 	void PhysicsComponent::Initialize()
 	{
+		//
 	}
 
 	bool PhysicsComponent::Write(const rapidjson::Value& value) const
 	{
-		return false;
+		return true;
 	}
 
 	bool PhysicsComponent::Read(const rapidjson::Value& value)
 	{
-		READ_DATA(value, m_velocity);
-		READ_DATA(value, m_acceleration);
-		READ_DATA(value, m_damping);
+		READ_DATA(value, velocity);
+		READ_DATA(value, acceleration);
+		READ_DATA(value, damping);
 
 		return true;
 	}

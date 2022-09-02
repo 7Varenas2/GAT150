@@ -1,9 +1,10 @@
 #pragma once
-#include "../Math/Vector2.h"
+#include "Math/Vector2.h"
 #include <cstdint>
 #include <vector>
+#include <map>
 #include <array>
-#include <sstream>
+#include <string>
 
 namespace neum
 {
@@ -54,6 +55,7 @@ namespace neum
 	extern const uint32_t key_left;
 	extern const uint32_t key_right;
 	extern const uint32_t key_escape;
+	extern const uint32_t key_enter;
 
 	extern const uint32_t button_left;
 	extern const uint32_t button_middle;

@@ -1,11 +1,13 @@
 #include "Scene.h"
-#include "Actor.h"
 #include "Factory.h"
-#include <iostream>
 #include <algorithm>
 
 namespace neum 
 {
+	void Scene::Initialize()
+	{
+		for (auto& actor : m_actors) { actor->Initialize(); }
+	}
 	void Scene::Update()
 	{
 		auto iter = m_actors.begin();
@@ -21,17 +23,7 @@ namespace neum
 				iter++;
 			}
 		}
-
-
-
-		for (auto& actor : m_actors)
-		{
-			
-			actor->Update();
-
-		}
 	}
-
 	void Scene::Draw(Renderer& renderer)
 	{
 		for (auto& actor : m_actors)
@@ -39,30 +31,26 @@ namespace neum
 			actor->Draw(renderer);
 		}
 	}
-
 	void Scene::Add(std::unique_ptr<Actor> actor)
 	{
 		actor->m_scene = this;
 		m_actors.push_back(std::move(actor));
+
 	}
 
 	void Scene::RemoveAll()
 	{
+		for (auto& actor : m_actors) { actor->SetDestroy(); }
 		m_actors.clear();
-	}
-
-	void Scene::Initialize()
-	{
 	}
 
 	bool Scene::Write(const rapidjson::Value& value) const
 	{
 		return true;
 	}
-
 	bool Scene::Read(const rapidjson::Value& value)
 	{
-		if (!value.HasMember("actors") || value["actors"].IsArray())
+		if (!value.HasMember("actors") || !value["actors"].IsArray())
 		{
 			return false;
 		}
@@ -75,7 +63,7 @@ namespace neum
 			auto actor = Factory::Instance().Create<Actor>(type);
 			if (actor)
 			{
-				// Read actor
+				//read actor
 				actor->Read(actorValue);
 
 				bool prefab = false;
@@ -90,8 +78,9 @@ namespace neum
 				{
 					Add(std::move(actor));
 				}
+
 			}
-			return true;
 		}
+		return true;
 	}
 }

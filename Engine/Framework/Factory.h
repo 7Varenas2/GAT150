@@ -1,29 +1,40 @@
 #pragma once
-#include "Framework\Singleton.h"
+#include "Singleton.h"
 #include "Core/Logger.h"
+#include <string>
 #include <memory>
 #include <map>
-#include <string>
 
 
 namespace neum
 {
 	class GameObject;
 
-	
-
 	class CreatorBase
 	{
 	public:
-		~CreatorBase() = default;
-
+		virtual ~CreatorBase() = default;
 		virtual std::unique_ptr<GameObject> Create() = 0;
 	};
-	
-	template<typename T>
+
+	//Creator
+	template <typename T>
 	class Creator : public CreatorBase
 	{
 	public:
+		std::unique_ptr<GameObject> Create() override
+		{
+			return std::make_unique<T>();
+		}
+	};
+
+	//Prefab Creator
+	template <typename T>
+	class PrefabCreator : public CreatorBase
+	{
+	public:
+		~PrefabCreator() = default;
+		PrefabCreator(std::unique_ptr<T> instance) : m_instance{ std::move(instance) } {}
 
 		std::unique_ptr<GameObject> Create() override
 		{
@@ -33,25 +44,12 @@ namespace neum
 		std::unique_ptr<T> m_instance;
 	};
 
-	template<typename T>
-	class PrefabCreator : public CreatorBase
-	{
-	public:
-		~PrefabCreator() = default;
-
-		PrefabCreator(std::unique_ptr<T> instance)  : m_instance{ std::move(instance) } {}
-		std::unique_ptr<GameObject> Create() override
-		{
-			return std::make_unique<T>();
-		}
-	private:
-
-		std::unique_ptr<T> m_instance;
-	};
-
+	//Factory
 	class Factory : public Singleton<Factory>
 	{
 	public:
+		void Shutdown() { m_registry.clear(); }
+
 		template <typename T>
 		void Register(const std::string& key);
 
@@ -65,22 +63,19 @@ namespace neum
 		std::map<std::string, std::unique_ptr<CreatorBase>> m_registry;
 	};
 
-
-	template<typename T>
+	template<typename T>//register
 	inline void Factory::Register(const std::string& key)
 	{
 		m_registry[key] = std::make_unique<Creator<T>>();
-
 	}
 
-	template<typename T>
+	template <typename T>//register prefab
 	inline void Factory::RegisterPrefab(const std::string& key, std::unique_ptr<T> instance)
 	{
 		m_registry[key] = std::make_unique<PrefabCreator<T>>(std::move(instance));
 	}
 
-
-	template<typename T>
+	template<typename T>//factory create
 	inline std::unique_ptr<T> Factory::Create(const std::string& key)
 	{
 		auto iter = m_registry.find(key);
@@ -89,7 +84,7 @@ namespace neum
 			return std::unique_ptr<T>(dynamic_cast<T*>(iter->second->Create().release()));
 		}
 
-		LOG("ERROR COULD NOT FIND KEY %s", key.c_str());
+		LOG("ERROR: could not find key - %s", key.c_str());
 
 		return std::unique_ptr<T>();
 	}

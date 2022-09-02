@@ -1,5 +1,6 @@
 #include "PlayerComponent.h"
-#include "../Engine.h"
+
+#include "Engine.h"
 #include <iostream>
 
 namespace neum
@@ -11,58 +12,152 @@ void PlayerComponent::Update()
 	// Update transform with input
 	Vector2 direction = Vector2::zero;
 
-	if (g_inputSystem.GetKeyState(key_space) == InputSystem::State::Pressed)
-	{
-		auto component = m_owner->GetComponent<AudioComponent>();
-		if (component)
-		{
-			component->Play();
-		}
 
-	}
-
-	if (g_inputSystem.GetKeyState(key_left) == InputSystem::State::Held)
+	if (g_inputSystem.GetKeyState(key_left) == (InputSystem::State::Held || InputSystem::State::Pressed))
 	{
-		m_owner->m_transform.rotation -= 180 * g_time.deltaTime;
+		direction = Vector2::left;
 		
 	}	
 	if (g_inputSystem.GetKeyState(key_right) == InputSystem::State::Held)
 	{
-		m_owner->m_transform.rotation += 180 * g_time.deltaTime;
+		direction = Vector2::right;
 	}
+
 	float thrust = 0;
 	if (g_inputSystem.GetKeyState(key_up) == InputSystem::State::Held)
-	{
-		thrust = 100;
+	{ 
+		thrust = speed;
 	}
 
-	auto component = m_owner->GetComponent<PhysicsComponent>();
-	if (component)
+	if (g_inputSystem.GetKeyState(key_down) == (InputSystem::State::Held || InputSystem::State::Pressed))
 	{
-		// Thrust force
-		Vector2 force = Vector2::Rotate({ 1,0 }, math::DegToRad(m_owner->m_transform.rotation)) * thrust;
-		component->ApplyForce(force);
-
-		// Gravitational force
-		force = (Vector2{ 400, 300 } - m_owner->m_transform.position).Normalized() * 60.0f;
-		component->ApplyForce(force);
-
+		direction = Vector2::down;
 	}
 
+	Vector2 velocity;
+	auto acomponent = m_owner->GetComponent<PhysicsComponent>();
+	if (acomponent)
+	{
+		acomponent->ApplyForce(direction * speed);
+		velocity = acomponent->velocity;
+	}
+
+	auto camera = m_owner->GetScene()->GetActorFromName("camera");
+	if (camera)
+	{
+		camera->m_transform.position = math::Lerp(camera->m_transform.position, m_owner->m_transform.position, 2 * g_time.deltaTime);
+		
+	}
+
+	if (m_groundCount > 0 && g_inputSystem.GetKeyState(key_space) == InputSystem::State::Pressed)
+	{
+		Vector2 velocity;
+		auto component = m_owner->GetComponent<PhysicsComponent>();
+		if (component)
+		{
+			float multiplier = (m_groundCount > 0) ? 1 : 0.2f;
+			component->ApplyForce(direction * speed * multiplier);
+			velocity = component->velocity;
+		}
+	}
+
+	auto animComponent = m_owner->GetComponent<SpriteAnimComponent>();
+	if (animComponent)
+	{
+		if (velocity.x != 0) animComponent->SetFlipHorizontal(velocity.x < 0);
+		if (std::fabs(velocity.x) > 0)
+		{
+			animComponent->SetSequence("run");
+		}
+		else
+		{
+			animComponent->SetSequence("idle");
+		}
+	}
+
+}
+
+void PlayerComponent::OnNotify(const Event& event)
+{
+	if (event.name == "EVENT_DAMAGE")
+	{
+		health -= std::get<float>(event.data);
+		if (health <= 0)
+		{
+			m_owner->SetDestroy();
+
+			Event event;
+			event.name = "EVENT_PLAYER_DEAD";
+			g_eventManager.Notify(event);
+		}
+	}
+
+	if (event.name == "EVENT_HEALTH")
+	{
+		health += std::get<float>(event.data);
+	}
 }
 
 void PlayerComponent::Initialize()
 {
+	CharacterComponent::Initialize();
+
+	g_eventManager.Subscribe("EVENT_PICKUP", std::bind(&CharacterComponent::OnNotify, this, std::placeholders::_1), m_owner);
+	g_eventManager.Subscribe("EVENT_HEALTH", std::bind(&CharacterComponent::OnNotify, this, std::placeholders::_1), m_owner);
+}
+
+void PlayerComponent::OnCollisionEnter(Actor* other)
+{
+	if (other->GetTag() == "Ground")
+	{
+		m_groundCount++;
+	}
+
+	if (other->GetName() == "Coin")
+	{
+		Event event;
+		event.name = "EVENT_ADD_POINTS";
+		event.data = 100;
+
+		g_eventManager.Notify(event);
+		other->SetDestroy();
+	}
+
+	if (other->GetName() == "Enemy")
+	{
+		Event event;
+		event.name = "EVENT_DAMAGE";
+		event.data = damage;
+		event.receiver = other;
+
+		neum::g_eventManager.Notify(event);
+	}
+
+	std::cout << "player enter \n";
+}
+
+void PlayerComponent::OnCollisionExit(Actor* other)
+{
+	if (other->GetTag() == "Ground")
+	{
+		m_groundCount--;
+	}
+
+	std::cout << "player exit \n";
 }
 
 bool PlayerComponent::Write(const rapidjson::Value& value) const
 {
-	return false;
+	return true;
 }
 
 bool PlayerComponent::Read(const rapidjson::Value& value)
 {
-	READ_DATA(value, speed);
+	CharacterComponent::Read(value);
+
+	std::string player_name;
+	READ_DATA(value, player_name);
+	READ_DATA(value, jump);
 	return true;
 }
 

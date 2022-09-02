@@ -11,9 +11,9 @@ namespace neum
 		using clock_rep = clock::rep;
 
 	public:
-		Time() : 
-			m_startTimePoint{ clock::now()} ,
-			m_frameTimePoint{ clock::now()} 
+		Time() :
+			m_startTimePoint{ clock::now() },
+			m_frameTimePoint{ clock::now() }
 		{}
 
 		void Tick();
@@ -24,8 +24,8 @@ namespace neum
 		float time = 0;
 
 	private:
-		clock::time_point m_startTimePoint; // Time point at start of application
-		clock::time_point m_frameTimePoint; // Time point at start of frame
+		clock::time_point m_startTimePoint;
+		clock::time_point m_frameTimePoint;
 
 	};
 }

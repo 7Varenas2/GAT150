@@ -1,11 +1,11 @@
 #pragma once
-#include "Renderer.h"
-#include "..\Math\Color.h"
-#include "..\EngResource\Resource.h"
-#include <iostream>
+#include "EngResource/Resource.h"
+#include "Math/Color.h"
 #include <string>
 
 struct _TTF_Font;
+struct SDL_Surface;
+
 namespace neum
 {
 	/* MAKE IT A RESOURCE*/
@@ -17,13 +17,14 @@ namespace neum
 		~Font();
 
 		bool Create(const std::string filename, ...) override;
-		void Load(const std::string& filename, int fontSize);
-
+		bool Load(const std::string& filename, int fontSize);
 		SDL_Surface* CreateSurface(const std::string& text, const Color& color);
-		
+				
 		friend class Text;
-		_TTF_Font* m_ttfFont = nullptr;
+		friend class TextComponent;
+
 	private:
+		_TTF_Font* m_ttfFont = nullptr;
 
 	};
 }

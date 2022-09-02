@@ -11,19 +11,23 @@ namespace neum
 
 	void AudioComponent::Update()
 	{
+
 	}
 
 	void AudioComponent::Initialize()
 	{
-		if (m_play_on_start)
-		{
-			Play();
-		}
+
+			if (play_on_start)
+			{
+				Play();
+			}
+		
 	}
 
 	void AudioComponent::Play()
 	{
-		m_channel = g_audioSystem.PlayAudio(m_soundname, m_volume, m_pitch, loop);
+		m_channel.Stop();
+		m_channel = g_audioSystem.PlayAudio(sound_name, volume, pitch, loop);
 	}
 
 	void AudioComponent::Stop()
@@ -39,26 +43,14 @@ namespace neum
 
 	bool AudioComponent::Read(const rapidjson::Value& value)
 	{
-		if (!value.HasMember("actors") || !value["actors"].IsArray())
-		{
-			return false;
-		}
-
-		for (auto& actorValue : value["actors"].GetArray())
-		{
-			std::string type;
-			READ_DATA(actorValue, type);
+		READ_DATA(value, sound_name);
+		READ_DATA(value, volume);
+		READ_DATA(value, pitch);
+		READ_DATA(value, play_on_start);
+		READ_DATA(value, loop);
 
 
-			auto actor = Factory::Instance().Create<Actor>(type);
-			if (actor)
-			{
-				// Read Actor
-				actor->Read(actorValue);
-			}
-			return true;
-		}
-		g_audioSystem.AddAudio(m_soundname, m_soundname);
+		g_audioSystem.AddAudio(sound_name, sound_name);
 		return true;
 
 	}

@@ -1,10 +1,11 @@
 #pragma once
 #include "box2d/b2_world.h"
 #include "Math/Vector2.h"
+#include "ContactListener.h"
 #include <memory>
 
 #define VECTOR2_TO_B2VEC2(vec) (*(b2Vec2*)(&vec))
-#define B2VEC2_TO_VECTOR2(vec) (*(neu::Vector2*)(&vec))
+#define B2VEC2_TO_VECTOR2(vec) (*(neum::Vector2*)(&vec))
 
 namespace neum
 {
@@ -40,6 +41,7 @@ namespace neum
 		void DestroyBody(b2Body* body);
 
 		void SetCollisionBox(b2Body* body, const CollisionData& data, class Actor* actor = nullptr);
+		void SetCollisionBoxStatic(b2Body* body, const CollisionData& data, class Actor* actor = nullptr);
 
 		static Vector2 WorldToScreen(const Vector2& world);
 		static Vector2 ScreenToWorld(const Vector2& screen);
@@ -47,5 +49,6 @@ namespace neum
 		static const float pixelsPerUnit;
 
 		std::unique_ptr<b2World> m_world;
+		std::unique_ptr<ContactListener> m_contactListener;
 	};
 }

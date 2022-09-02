@@ -1,8 +1,9 @@
- #pragma once
+#pragma once
+#include "box2d/box2d.h"
+#include <cmath>
+#include <fstream>
 #include <iostream>
 #include <string>
-#include <sstream>
-#include <cmath>
 
 namespace neum
 {
@@ -19,6 +20,8 @@ namespace neum
 		void Set(float x, float y) { this->x = x, this->y = y; }
 		float operator [] (size_t index) const { return (&x)[index]; }
 		float& operator[] (size_t index) { return (&x)[index]; }
+		operator b2Vec2() const { return b2Vec2{ x, y }; }
+		Vector2(const b2Vec2& v2) : x{ v2.x }, y{ v2.y } {}
 		
 		// Aruthmetic operators
 		// Vector2 = Vector2 + Vector2
@@ -60,6 +63,11 @@ namespace neum
 
 		Vector2 Normalized();
 		void Normalize();
+
+
+		float Dot(const Vector2& v);
+		float GetAngleBetween(const Vector2& v);
+		float GetSignedAngleBetween(const Vector2& v);
 		
 		float GetAngle();
 		static Vector2 Rotate(const Vector2&, float angle);
@@ -105,6 +113,22 @@ namespace neum
 	{
 		(*this) /= Length();
 
+	}
+
+	inline float Vector2::Dot(const Vector2& v)
+	{
+		return x * v.x + y * v.y;
+	}
+	inline float Vector2::GetAngleBetween(const Vector2& v)
+	{
+		return std::acos(Dot(v));
+	}
+	inline float Vector2::GetSignedAngleBetween(const Vector2& v)
+	{
+		float y = x * v.y - y * v.x; // perpendicular dot product 
+		float x = x * v.x + y * v.y; // dor product 
+
+		return std::atan2(y, x);
 	}
 
 	inline float Vector2::GetAngle()

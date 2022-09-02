@@ -1,11 +1,12 @@
 #pragma once
 
 #ifdef _DEBUG
-	#define LOG(format, ...) neum::g_logger.Log(format, __VA_ARGS__)
+	#define LOG(format,...) g_logger.Log(format, __VA_ARGS__)
 #else
 	#define LOG(format, ...) ((void)0)
+#endif //_DEBUG
 
-#endif // _DEBUG
+
 namespace neum
 {
 	class Logger

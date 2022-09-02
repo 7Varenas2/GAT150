@@ -16,26 +16,16 @@ namespace neum
 
 	}
 
-	bool Model::Create(const std::string filename, ...)
-	{
-		if (!Load(filename))
-		{
-			LOG("Error");
-			return false;
 
+	bool Model::Create(const std::string name, ...)
+	{
+		if (!Load(name))
+		{
+			LOG("ERROR: Could Not Create Model %s", name.c_str());
+			return false;
 		}
 		return true;
 	}
-
-	//bool Model::Create(const std::string& filename)
-	//{
-	//	if (!Load(filename))
-	//	{
-	//		LOG("Error could not create model %s", filename.c_str());
-	//		return false;
-	//	}
-	//	return true;
-	//}
 
 	void Model::Draw(Renderer& renderer, const Vector2& position, float angle, const float scale)
 	{
@@ -54,10 +44,7 @@ namespace neum
 	void Model::Draw(Renderer& renderer, const Transform& transform)
 	{
 		Matrix3x3 mx = transform.matrix;
-		if (m_points.size() == 0)
-		{
-			return;
-		}
+
 
 		for (auto i = 0; i < m_points.size() - 1; i++)
 		{

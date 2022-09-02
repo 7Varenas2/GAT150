@@ -3,6 +3,7 @@
 namespace neum
 {
 	class Actor;
+
 	class Collision
 	{
 	public:

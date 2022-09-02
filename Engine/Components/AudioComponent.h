@@ -1,5 +1,4 @@
 #pragma once
-#pragma once
 #include "Framework/Component.h"
 #include "Audio/AudioChannel.h"
 #include <string>
@@ -14,7 +13,7 @@ namespace neum
 
 		CLASS_DECLARATION(AudioComponent)
 
-		virtual void Initialize() override;
+		void Initialize() override;
 		void Update() override;
 
 		virtual bool Write(const rapidjson::Value& value) const override;
@@ -26,10 +25,10 @@ namespace neum
 	public:
 		AudioChannel m_channel;
 
-		std::string m_soundname;
-		float m_volume = 1.0f;
-		float m_pitch = 1.0f;
-		bool m_play_on_start = false;
+		std::string sound_name;
+		float volume = 1.0f;
+		float pitch = 1.0f;
+		bool play_on_start = false;
 		bool loop= false;
 
 

@@ -1,6 +1,8 @@
 #include "AudioSystem.h"
-#include "Core\Logger.h"
-#include <fmod.hpp>
+#include "../ThirdParty/fmod/core/inc/fmod.hpp"
+#include "Renderer/Texture.h"
+#include "Core/Logger.h"
+
 
 namespace neum
 {

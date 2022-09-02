@@ -14,7 +14,7 @@
 	#define DBG_NEW new
 #endif // _DEBUG
 
-namespace neu
+namespace neum
 {
 	void InitializeMemory();
 }

@@ -12,6 +12,8 @@ namespace neum
 	{
 		b2Vec2 gravity{ 0, 10 };
 		m_world = std::make_unique<b2World>(gravity);
+		m_contactListener = std::make_unique<ContactListener>();
+		m_world->SetContactListener(m_contactListener.get());
 	}
 
 	void PhysicsSystem::Shutdown()
@@ -40,6 +42,50 @@ namespace neum
 	void PhysicsSystem::DestroyBody(b2Body* body)
 	{
 		m_world->DestroyBody(body);
+	}
+
+	void PhysicsSystem::SetCollisionBox(b2Body* body, const CollisionData& data, Actor* actor)
+	{
+		b2PolygonShape shape;
+		Vector2 worldSize = PhysicsSystem::ScreenToWorld(data.size * 0.5f);
+		shape.SetAsBox(worldSize.x, worldSize.y);
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.density = data.density;
+		fixtureDef.friction = data.friction;
+		fixtureDef.restitution = data.restitution;
+		fixtureDef.isSensor = data.is_trigger;
+		fixtureDef.shape = &shape;
+		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(actor);
+
+		body->CreateFixture(&fixtureDef);
+
+	}
+
+	void PhysicsSystem::SetCollisionBoxStatic(b2Body* body, const CollisionData& data, Actor* actor)
+	{
+		Vector2 worldSize = PhysicsSystem::ScreenToWorld(data.size * 0.5f);
+
+		b2Vec2 vs[4] =
+		{
+			{ -worldSize.x, -worldSize.y },
+			{  worldSize.x, -worldSize.y },
+			{  worldSize.x,  worldSize.y },
+			{ -worldSize.x,  worldSize.y },
+		};
+
+		b2ChainShape shape;
+		shape.CreateLoop(vs, 4);
+
+		b2FixtureDef fixtureDef;
+		fixtureDef.density = data.density;
+		fixtureDef.friction = data.friction;
+		fixtureDef.restitution = data.restitution;
+		fixtureDef.isSensor = data.is_trigger;
+		fixtureDef.shape = &shape;
+		fixtureDef.userData.pointer = reinterpret_cast<uintptr_t>(actor);
+
+		body->CreateFixture(&fixtureDef);
 	}
 
 }

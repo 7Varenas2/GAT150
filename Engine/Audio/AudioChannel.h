@@ -11,7 +11,6 @@ namespace neum
 	{
 	public:
 		AudioChannel() {}
-
 		AudioChannel(FMOD::Channel* channel) : m_channel{ channel } {}
 
 		bool IsPlaying();

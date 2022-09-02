@@ -1,8 +1,6 @@
 #pragma once
-#include "Renderer.h"
-#include "Font.h"
-#include <iostream>
 #include <string>
+#include <memory>
 
 struct SDL_Texture;
 namespace neum
@@ -11,7 +9,7 @@ namespace neum
 	class Renderer;
 	struct Color;
 	struct Vector2;
-	
+
 	class Text
 	{
 	public:
@@ -19,13 +17,12 @@ namespace neum
 		Text(Font* font) : m_font{ font } {}
 		~Text();
 
-		 void Create(Renderer& renderer, const std::string& text, const Color& color);
-		 void Draw(Renderer& renderer, const Vector2& position);
+		void Create(Renderer& renderer, const std::string& text, const Color& color);
+		void Draw(Renderer& renderer, const Vector2& position);
 
-		
+
 	private:
-		Font* m_font; // Nullptr
-		SDL_Texture* m_texture; //Nullptr
-
+		Font* m_font = nullptr;
+		SDL_Texture* m_texture = nullptr;
 	};
 }

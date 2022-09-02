@@ -1,5 +1,6 @@
 #pragma once
-#include "../Engine.h"
+#include "Framework/Component.h"
+#include "Math/Vector2.h"
 
 namespace neum
 {
@@ -10,17 +11,17 @@ namespace neum
 
 		CLASS_DECLARATION(PhysicsComponent)
 
-		void Update() override;
-		void ApplyForce(Vector2& force) { m_acceleration += force; }
-
-
 		virtual void Initialize() override;
+		void Update() override;
+		void ApplyForce(const Vector2& force) { acceleration += force; }
+
+
 		virtual bool Write(const rapidjson::Value& value) const override;
 		virtual bool Read(const rapidjson::Value& value) override;
 
-		Vector2 m_velocity;
-		Vector2 m_acceleration;
-		float m_damping = 1;
+		Vector2 velocity;
+		Vector2 acceleration;
+		float damping = 1;
 
 	};
 	

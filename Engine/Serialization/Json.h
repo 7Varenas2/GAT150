@@ -1,8 +1,9 @@
-#pragma once
-#include "document.h"
-#include <string>
+#pragma once 
+#include "document.h" 
+#include <string> 
+#include <vector> 
 
-#define READ_DATA(value, data) neum::json::Get(value,#data,data)
+#define READ_DATA(value, data) neum::json::Get(value, #data, data)
 
 
 namespace neum
@@ -11,9 +12,8 @@ namespace neum
 	struct Color;
 	struct Rect;
 
-	namespace json 
+	namespace json
 	{
-
 		bool Load(const std::string& filename, rapidjson::Document& document);
 
 		bool Get(const rapidjson::Value& value, const std::string& name, int& data);
@@ -23,6 +23,8 @@ namespace neum
 		bool Get(const rapidjson::Value& value, const std::string& name, Vector2& data);
 		bool Get(const rapidjson::Value& value, const std::string& name, Color& data);
 		bool Get(const rapidjson::Value& value, const std::string& name, Rect& data);
+		bool Get(const rapidjson::Value& value, const std::string& name, std::vector<std::string>& data);
+		bool Get(const rapidjson::Value& value, const std::string& name, std::vector<int>& data);
 	}
 
 }

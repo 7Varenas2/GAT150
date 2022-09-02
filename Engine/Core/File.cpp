@@ -3,7 +3,8 @@
 #include <filesystem>
 #include <fstream>
 
-namespace neum {
+namespace neum 
+{
 	void SetFilePath(const std::string& pathname)
 	{
 		std::filesystem::current_path(pathname);
@@ -13,28 +14,25 @@ namespace neum {
 	{
 		return std::filesystem::current_path().string();
 	}
-
 	bool FileExists(const std::string& pathname)
 	{
 		return std::filesystem::exists(pathname);
 	}
-
 	bool GetFileSize(const std::string& pathname, size_t& size)
 	{
-		if (!FileExists(pathname)) return false;
+		if (!FileExists(pathname))
+		{
+			LOG("ERROR: Could Not Read File %s", pathname.c_str());
+			return false;
+		}
+
 		size = std::filesystem::file_size(pathname);
 
 		return true;
 	}
-
 	bool ReadFile(const std::string& pathname, std::string& buffer)
 	{
-		if (!FileExists(pathname)) 
-		{
-			LOG("Error could not read file %s", pathname.c_str());
-			return false;
-		}
-		// Get file size and set buffer size
+		if (!FileExists(pathname)) return false;
 
 		size_t size;
 		GetFileSize(pathname, size);

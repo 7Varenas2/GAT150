@@ -1,5 +1,7 @@
 #include "ModelComponent.h"
+#include "Renderer/Model.h"
 #include "../Framework/Actor.h"
+#include "Engine.h"
 
 namespace neum
 {

@@ -28,7 +28,7 @@ namespace neum
 		
 
 	private:
-		FMOD::System* m_fmodSystem;
+		FMOD::System* m_fmodSystem = nullptr;
 		std::map<std::string, FMOD::Sound*> m_sounds;
 	};
 }

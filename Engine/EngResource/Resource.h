@@ -12,8 +12,4 @@ namespace neum
 	};
 }
 
-// int* -> address
-// Font* -> address
 
-// void* vo = &i; -> address (type ???)
-// int* = (int*)vo;

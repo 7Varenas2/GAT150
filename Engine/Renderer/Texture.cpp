@@ -1,77 +1,83 @@
-#include "Texture.h"
-#include "Renderer.h"
-#include "../Core/Logger.h"
-#include <string>
-#include<SDL.h>
-#include<SDL_image.h>
-#include <SDL_surface.h>
+#include "Texture.h" 
+#include "Renderer.h" 
+#include "Core/Logger.h" 
+#include <SDL.h> 
+#include <SDL_image.h> 
+#include <stdarg.h>
 
 namespace neum
 {
     Texture::~Texture()
     {
-        if (m_texture != NULL)
+        // !! if texture not null SDL_DestroyTexture 
+
+        if (m_texture != nullptr)
         {
             SDL_DestroyTexture(m_texture);
         }
-    }
 
-    bool Texture::Create(const std::string filename, ...)
+    }
+    bool Texture::Create(const std::string name, ...)
     {
-        // Check data is not null
-        // va_list - Type to hold information about variable arguments
+        //
         va_list args;
 
-        // va_start - enables access to variadic function arguments
-        va_start(args, filename);
+        va_start(args, name);
 
-        // va_arg - accesses the next variadic function arguments
         Renderer& renderer = va_arg(args, Renderer);
 
-        // va_end - ends traversal of the cvariadic function arguments
         va_end(args);
 
-
-        // Create texture (returns true/false if successful
-        return Create(renderer, filename);
-
+        return Create(renderer, name);
     }
 
-    bool Texture::Create(Renderer& renderer, const std::string& filename)
+    bool Texture::Create(neum::Renderer& renderer, const std::string& filename)
     {
-        // load surface
-        SDL_Surface* surface = IMG_Load(filename.c_str());// !! call IMG_Load with c-string of filename
+        // load surface 
+        SDL_Surface* surface = IMG_Load(filename.c_str());// !! call IMG_Load with c-string of filename 
+        Texture::m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+
+        //error check
         if (surface == nullptr)
         {
-            LOG(SDL_GetError());
+            LOG("Error Loading %s", filename.c_str());
+            SDL_FreeSurface(surface);
             return false;
         }
-        // create texture
-        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
+
         if (m_texture == nullptr)
         {
-            LOG(SDL_GetError());
+            LOG("SDL ERROR(Texture::Create): %s", SDL_GetError());
             return false;
         }
+
         SDL_FreeSurface(surface);
         return true;
-
     }
 
-    bool Texture::CreateFromSurface(SDL_Surface* m_surface, Renderer& renderer)
+    bool Texture::CreateFromSurface(SDL_Surface* surface, Renderer& renderer)
     {
+        // destroy the current texture if one exists 
         if (m_texture) SDL_DestroyTexture(m_texture);
-        
-        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, m_surface);
 
-        SDL_FreeSurface(m_surface);
+        // create texture 
+        // !! call SDL_CreateTextureFromSurface passing in renderer and surface 
+        m_texture = SDL_CreateTextureFromSurface(renderer.m_renderer, surface);
 
-        if (!m_texture)
+        if (surface == nullptr)
         {
-            LOG("ERROR");
+            LOG("Error Loading Surface %s");
+            SDL_FreeSurface(surface);
             return false;
         }
 
+        if (m_texture == nullptr)
+        {
+            LOG("Texture::Create from surface (m_texture = null)", SDL_GetError());
+            return false;
+        }
+
+        SDL_FreeSurface(surface);
         return true;
     }
 
@@ -79,8 +85,8 @@ namespace neum
     {
         SDL_Point point;
         SDL_QueryTexture(m_texture, nullptr, nullptr, &point.x, &point.y);
- 
-        return Vector2(point.x, point.y); // !! return Vector2 of point.x, point.y
+
+        return Vector2((float)point.x, (float)point.y);
     }
 
 }

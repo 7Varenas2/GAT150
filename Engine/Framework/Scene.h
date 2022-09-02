@@ -1,16 +1,15 @@
 #pragma once
-#include "Game.h"
 #include "Actor.h"
-#include <iostream>
 #include <list>
 #include <memory>
 
 
 namespace neum
 {
-	// Forward declaration
+	//foward declaration
 	class Actor;
 	class Renderer;
+	class Game;
 
 	class Scene : public GameObject, public ISerializable
 	{
@@ -22,36 +21,82 @@ namespace neum
 
 		CLASS_DECLARATION(Scene)
 
-		// Inherited via ISerializable
-		void Initialize() override;
-		virtual bool Write(const rapidjson::Value& value) const override;
-		virtual bool Read(const rapidjson::Value& value) override;
+			void Initialize() override;
 
-		void Update();
+		void Update() override;
 		void Draw(Renderer& renderer);
+
 		void Add(std::unique_ptr<Actor> actor);
 		void RemoveAll();
 
 		template<typename T>
 		T* GetActor();
 
+		template<typename T = Actor>
+		T* GetActorFromName(const std::string& name);
+
+		template<typename T = Actor>
+		std::vector<T*> GetActorsFromTag(const std::string& tag);
+
 		Game* GetGame() { return m_game; }
 
+		// Inherited via ISerializable
+		virtual bool Write(const rapidjson::Value& value) const override;
+		virtual bool Read(const rapidjson::Value& value) override;
 
 	private:
 		std::list<std::unique_ptr<Actor>> m_actors;
-		Game* m_game;
+		Game* m_game = nullptr;
+
 	};
 
 	template<typename T>
 	inline T* Scene::GetActor()
 	{
-
 		for (auto& actor : m_actors)
 		{
 			T* result = dynamic_cast<T*>(actor.get());
 			if (result) return result;
+
 		}
+
 		return nullptr;
+	}
+
+	template<typename T>
+	inline T* Scene::GetActorFromName(const std::string& name)
+	{
+		//  !! for loop (range based) through m_actors
+		for (auto& actor : m_actors)
+		{
+			//  !! compare name to actor GetName()) 
+			if (actor->GetName() == name)
+			{
+				return dynamic_cast<T*>(actor.get());
+			}
+		}
+
+		return nullptr;
+	}
+
+	template<typename T>
+	inline std::vector<T*> Scene::GetActorsFromTag(const std::string& tag)
+	{
+		std::vector<T*> result;
+
+		//  !! for loop (range based) through m_actors 
+		for (auto actor : m_actors)
+		{
+			if (actor->GetTag() == tag)
+			{
+				T* tagActor = dynamic_cast<T*>(actor.get());
+				if (tagActor)
+				{
+					result.push_back(tagActor);
+				}
+			}
+		}
+
+		return result;
 	}
 }
